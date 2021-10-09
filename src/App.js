@@ -17,9 +17,9 @@ export default class App extends Component{
     search: '',
     error: '',
     isLoading: false,
-    isModalOpen: false,
+    showModal: false,
     largeImageId: null,
-    largeImage: [],
+    largeImage: '',
     };
 
 
@@ -71,31 +71,37 @@ export default class App extends Component{
         }
       });
   };
-  openModal = () => {
-    this.setState(({ isModalOpen }) => ({
-      isModalOpen: !isModalOpen,
-    })
-    )
+ 
+  handleGalleryItem = fullImageUrl => {
+    this.setState({
+      largeImage: fullImageUrl,
+      showModal: true,
+    });
   };
-
+    toggleModal = () => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+      largeImage: '',
+    }));
+  };
  
   render() {
-    const { isLoading, images, isModalOpen, } = this.state;
+    const { isLoading, images, showModal, largeImage, } = this.state;
 
     return (
       <div >
         <ToastContainer/>
         <Searchbar onSubmit={this.onSearch} />
-        <ImageGallery openModal={this.openModal} images={images} />
+        <ImageGallery  onImageClick={this.handleGalleryItem} images={images} />
         {isLoading && <Loader />}
         {images.length > 0 && (
           <Button fetchImages={this.fetchImagesWithScroll} />
         )}
-        {isModalOpen && (
-          <Modal  onClose={this.openModal} >
-            <img src='' alt='' />
-          </Modal>
-         ) }
+                {showModal && (
+           <Modal onClose={this.toggleModal}>
+          <img src={largeImage} alt="" width = '800x' height='800px'/>
+           </Modal>
+         )}
         
       </div>
     );

@@ -1,16 +1,16 @@
 import React from 'react';
 import './ImageGalleryItem.css';
 
-const ImageGalleryItem = ({ image, openModal }) => {
-  const { webformatURL, tags } = image;
+const ImageGalleryItem = ({ image, onImageClick  }) => {
+ const fullImage = () => onImageClick(image.largeImageURL);
 
   return (
-    <li   id={image.id} onClick={openModal}  className = 'ImageGalleryItem'>
+    <li   id={image.id}   className = 'ImageGalleryItem'>
       <img
         className ="ImageGalleryItem-image "
-        src={webformatURL}
-        alt={tags}
-      
+        src={image.webformatURL}
+        alt={image.tags}
+      onClick={fullImage}
       />
     </li>
   );
